@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Partidos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Listado de Partidos</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha y Hora</th>
+            <th>Lugar</th>
+            <th>Local</th>
+            <th>Visitante</th>
+        </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+</table>
+
+<script>
+    fetch("http://localhost:3000/api/partidos")
+        .then(res => res.json())
+        .then(data => {
+            const tabla = document.getElementById("tabla");
+            tabla.innerHTML = ""; // limpiar por si hay algo
+
+            if (data.length === 0) {
+                tabla.innerHTML = "<tr><td colspan='5'>No hay partidos disponibles</td></tr>";
+                return;
+            }
+
+            data.forEach(row => {
+                tabla.innerHTML += `
+                    <tr>
+                        <td>${row.partido_id}</td>
+                        <td>${new Date(row.fecha_hora).toLocaleString()}</td>
+                        <td>${row.lugar || ''}</td>
+                        <td>${row.local}</td>
+                        <td>${row.visitante}</td>
+                    </tr>
+                `;
+            });
+        })
+        .catch(err => {
+            console.error("Error cargando partidos:", err);
+            document.getElementById("tabla").innerHTML = "<tr><td colspan='5'>Error cargando partidos</td></tr>";
+        });
+</script>
+
+</body>
+</html>
