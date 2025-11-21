@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitudes</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<h1>Listado de solicitudes</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+</table>
+
+<script>
+    fetch("http://localhost:3000/api/solicitudes")
+        .then(res => res.json())
+        .then(data => {
+            const tabla = document.getElementById("tabla");
+
+            data.forEach(row => {
+                tabla.innerHTML += `
+                    <tr>
+                        <td>${row.id}</td>
+                        <td>${row.descripcion}</td>
+                        <td>${row.estado}</td>
+                    </tr>
+                `;
+            });
+        });
+</script>
+
+</body>
+</html>
